@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Takaleed - Plateforme de facturation marocaine</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0a0a0f; color: #fff; line-height: 1.6; overflow-x: hidden; }
+    .container { max-width: 1280px; margin: 0 auto; padding: 0 1.5rem; }
+    
+    .bg-glow { position: fixed; inset: 0; z-index: -1; overflow: hidden; }
+    .bg-glow .blob { position: absolute; border-radius: 50%; filter: blur(100px); opacity: 0.3; animation: float 6s ease-in-out infinite; }
+    .bg-glow .blob:nth-child(1) { top: 10%; left: 20%; width: 400px; height: 400px; background: #3b82f6; animation-delay: 0s; }
+    .bg-glow .blob:nth-child(2) { bottom: 20%; right: 10%; width: 500px; height: 500px; background: #8b5cf6; animation-delay: 2s; }
+    .bg-glow .blob:nth-child(3) { top: 40%; left: 60%; width: 300px; height: 300px; background: #ec4899; animation-delay: 4s; }
+    @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-30px); } }
+    
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 50; border-bottom: 1px solid rgba(255,255,255,0.1); background: rgba(10,10,15,0.8); backdrop-filter: blur(20px); }
+    nav .container { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+    .logo { display: flex; align-items: center; gap: 0.75rem; font-size: 1.25rem; font-weight: 700; }
+    .logo-icon { width: 40px; height: 40px; border-radius: 10px; background: linear-gradient(135deg, #3b82f6, #8b5cf6); display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.25rem; }
+    .nav-links { display: flex; gap: 2rem; }
+    .nav-links a { color: #9ca3af; font-size: 0.875rem; transition: color 0.2s; }
+    .nav-links a:hover { color: #fff; }
+    .nav-cta { display: flex; gap: 1rem; align-items: center; }
+    .btn { padding: 0.5rem 1.25rem; border-radius: 8px; font-size: 0.875rem; font-weight: 500; cursor: pointer; transition: all 0.2s; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; }
+    .btn-outline { background: transparent; border: 1px solid rgba(255,255,255,0.2); color: #fff; }
+    .btn-outline:hover { background: rgba(255,255,255,0.1); }
+    .btn-primary { background: linear-gradient(135deg, #3b82f6, #8b5cf6); color: #fff; border: none; box-shadow: 0 0 40px rgba(59, 130, 246, 0.3); }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 60px rgba(59, 130, 246, 0.4); }
+    
+    .hero { padding: 160px 0 100px; text-align: center; }
+    .badge { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; border-radius: 9999px; background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); color: #60a5fa; font-size: 0.875rem; margin-bottom: 2rem; }
+    .hero h1 { font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 800; line-height: 1.1; margin-bottom: 1.5rem; }
+    .hero h1 span { background: linear-gradient(135deg, #60a5fa, #a78bfa, #f472b6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .hero p { font-size: 1.25rem; color: #9ca3af; max-width: 640px; margin: 0 auto 2.5rem; }
+    .hero-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+    .btn-lg { padding: 1rem 2rem; font-size: 1rem; border-radius: 12px; }
+    
+    .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; max-width: 800px; margin: 4rem auto; }
+    .stat { text-align: center; }
+    .stat-value { font-size: 2rem; font-weight: 700; background: linear-gradient(135deg, #fff, #94a3b8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .stat-label { font-size: 0.875rem; color: #6b7280; margin-top: 0.25rem; }
+    
+    .features { padding: 100px 0; }
+    .section-header { text-align: center; margin-bottom: 4rem; }
+    .section-header h2 { font-size: 2.5rem; font-weight: 700; margin-bottom: 1rem; }
+    .section-header p { color: #9ca3af; max-width: 600px; margin: 0 auto; }
+    .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+    .feature-card { padding: 2rem; border-radius: 16px; background: rgba(15,15,25,0.6); border: 1px solid rgba(255,255,255,0.08); transition: all 0.3s; }
+    .feature-card:hover { transform: translateY(-5px); border-color: rgba(139, 92, 246, 0.3); box-shadow: 0 25px 50px -12px rgba(139, 92, 246, 0.15); }
+    .feature-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem; }
+    .feature-card h3 { font-size: 1.125rem; font-weight: 600; margin-bottom: 0.5rem; }
+    .feature-card p { color: #9ca3af; font-size: 0.875rem; line-height: 1.6; }
+    
+    .morocco { padding: 100px 0; background: linear-gradient(180deg, rgba(59, 130, 246, 0.05), transparent); }
+    .morocco > .container > div { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+    .morocco h2 { font-size: 2.5rem; font-weight: 700; margin-bottom: 1.5rem; }
+    .morocco p { color: #9ca3af; font-size: 1.125rem; margin-bottom: 2rem; }
+    .morocco-list { list-style: none; }
+    .morocco-list li { display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 0; color: #d1d5db; }
+    .morocco-list .check { width: 24px; height: 24px; color: #22c55e; flex-shrink: 0; }
+    .invoice-preview { padding: 2rem; border-radius: 16px; background: rgba(15,15,25,0.8); border: 1px solid rgba(255,255,255,0.1); position: relative; }
+    .invoice-preview::before { content: '✓'; position: absolute; top: -16px; right: -16px; width: 48px; height: 48px; background: linear-gradient(135deg, #f59e0b, #ef4444); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; }
+    
+    .pricing { padding: 100px 0; }
+    .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; max-width: 1000px; margin: 0 auto; }
+    .pricing-card { padding: 2rem; border-radius: 16px; background: rgba(15,15,25,0.6); border: 1px solid rgba(255,255,255,0.08); position: relative; }
+    .pricing-card.popular { border-color: rgba(139, 92, 246, 0.5); box-shadow: 0 0 60px rgba(139, 92, 246, 0.15); }
+    .popular-badge { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); padding: 0.25rem 1rem; background: linear-gradient(135deg, #3b82f6, #8b5cf6); border-radius: 9999px; font-size: 0.75rem; font-weight: 600; }
+    .pricing-card h3 { font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5rem; }
+    .pricing-card .desc { color: #9ca3af; font-size: 0.875rem; margin-bottom: 1.5rem; }
+    .pricing-card .price { font-size: 2.5rem; font-weight: 700; margin-bottom: 1.5rem; }
+    .pricing-card .price span { font-size: 1rem; color: #6b7280; font-weight: 400; }
+    .pricing-features { list-style: none; margin-bottom: 2rem; }
+    .pricing-features li { display: flex; align-items: center; gap: 0.75rem; padding: 0.5rem 0; color: #d1d5db; font-size: 0.875rem; }
+    .pricing-features .check { width: 20px; height: 20px; color: #22c55e; flex-shrink: 0; }
+    
+    .cta { padding: 100px 0; }
+    .cta-card { padding: 4rem; border-radius: 24px; background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(139, 92, 246, 0.1)); border: 1px solid rgba(139, 92, 246, 0.2); text-align: center; position: relative; overflow: hidden; }
+    .cta-card::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 50% 0%, rgba(139, 92, 246, 0.2), transparent 70%); }
+    .cta-card > * { position: relative; }
+    .cta-card h2 { font-size: 2.5rem; font-weight: 700; margin-bottom: 1rem; }
+    .cta-card p { color: #9ca3af; font-size: 1.125rem; margin-bottom: 2rem; max-width: 500px; margin-left: auto; margin-right: auto; }
+    
+    footer { padding: 3rem 0; border-top: 1px solid rgba(255,255,255,0.1); }
+    footer .container { display: flex; justify-content: space-between; align-items: center; }
+    footer .logo { font-size: 1rem; }
+    footer p { color: #6b7280; font-size: 0.875rem; }
+    
+    @media (max-width: 1024px) { .features-grid { grid-template-columns: repeat(2, 1fr); } .morocco > .container > div { grid-template-columns: 1fr; } .pricing-grid { grid-template-columns: 1fr; max-width: 400px; } }
+    @media (max-width: 768px) { .nav-links { display: none; } .hero h1 { font-size: 2.5rem; } .stats { grid-template-columns: repeat(2, 1fr); } .features-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="bg-glow"><div class="blob"></div><div class="blob"></div><div class="blob"></div></div>
+
+  <nav><div class="container">
+    <a href="#" class="logo"><div class="logo-icon">ت</div>Takaleed</a>
+    <div class="nav-links"><a href="#features">Fonctionnalités</a><a href="#pricing">Tarifs</a><a href="#contact">Contact</a></div>
+    <div class="nav-cta"><a href="/login" class="btn btn-outline">Connexion</a><a href="/register" class="btn btn-primary">Essai gratuit</a></div>
+  </div></nav>
+
+  <section class="hero"><div class="container">
+    <div class="badge"><svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>100% conforme aux normes marocaines</div>
+    <h1>La facturation<br><span>nouvelle génération</span></h1>
+    <p>Créez des factures professionnelles conformes TVA 20%, gérez vos clients et suivez vos paiements. Conçu pour les entrepreneurs marocains.</p>
+    <div class="hero-btns">
+      <a href="/register" class="btn btn-primary btn-lg">Commencer gratuitement <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg></a>
+      <a href="#demo" class="btn btn-secondary btn-lg"><span style="width:12px;height:12px;background:#22c55e;border-radius:50%;display:inline-block;margin-right:8px;"></span>Voir la démo</a>
+    </div>
+    <div class="stats"><div class="stat"><div class="stat-value">5000+</div><div class="stat-label">Entreprises</div></div><div class="stat"><div class="stat-value">50M DH</div><div class="stat-label">Facturé/mois</div></div><div class="stat"><div class="stat-value">99.9%</div><div class="stat-label">Disponibilité</div></div><div class="stat"><div class="stat-value">24/7</div><div class="stat-label">Support</div></div></div>
+  </div></section>
+
+  <section class="features" id="features"><div class="container">
+    <div class="section-header"><h2>Tout ce dont vous avez besoin</h2><p>Fonctionnalités complètes adaptées aux besoins spécifiques des entreprises marocaines</p></div>
+    <div class="features-grid">
+      <div class="feature-card"><div class="feature-icon" style="background: rgba(59, 130, 246, 0.1); color: #3b82f6;"><svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg></div><h3>Factures conformes TVA</h3><p>Générez des factures 100% conformes à la réglementation marocaine avec TVA 20% et mentions légales.</p></div>
+      <div class="feature-card"><div class="feature-icon" style="background: rgba(139, 92, 246, 0.1); color: #8b5cf6;"><svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg></div><h3>Support Arabe & Français</h3><p>Interface bilingue complète avec factures disponibles en arabe et en français.</p></div>
+      <div class="feature-card"><div class="feature-icon" style="background: rgba(34, 197, 94, 0.1); color: #22c55e;"><svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg></div><h3>Paiements en ligne</h3><p>Acceptez les paiements par carte bancaire via Stripe instantanément.</p></div>
+      <div class="feature-card"><div class="feature-icon" style="background: rgba(245, 158, 11, 0.1); color: #f59e0b;"><svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg></div><h3>Mentions légales complètes</h3><p>ICE, IF, RC, Patent - Toutes les informations obligatoires automatiquement.</p></div>
+      <div class="feature-card"><div class="feature-icon" style="background: rgba(236, 72, 153, 0.1); color: #ec4899;"><svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg></div><h3>Analytics & Rapports</h3><p>Tableaux de bord détaillés pour suivre votre activité et vos revenus.</p></div>
+      <div class="feature-card"><div class="feature-icon" style="background: rgba(139, 92, 246, 0.1); color: #8b5cf6;"><svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div><h3>Rappels automatiques</h3><p>Ne manquez plus un paiement avec les rappels automatiques par email.</p></div>
+    </div>
+  </div></section>
+
+  <section class="morocco"><div class="container"><div>
+    <div><h2>🇲🇦 Conçu pour les entreprises marocaines</h2><p>Takaleed comprend les spécificités du paysage entrepreneurial marocain et offre des fonctionnalités adaptées à vos besoins.</p><ul class="morocco-list"><li><svg class="check" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>TVA 20% et autres taux (14%, 10%, 7%, 0%)</li><li><svg class="check" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>ICE - Identifiant Commun de l'Entreprise</li><li><svg class="check" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>IF - Identifiant Fiscal</li><li><svg class="check" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>RC - Immatriculation au Registre de Commerce</li><li><svg class="check" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>Patente et centre d'immatriculation</li><li><svg class="check" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>Devise MAD avec formatage automatique</li></ul></div>
+    <div class="invoice-preview">
+      <div style="display: flex; justify-content: space-between; padding-bottom: 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.1); margin-bottom: 1.5rem;">
+        <div><div style="color: #9ca3af; font-size: 0.875rem; margin-bottom: 0.25rem;">Facture #</div><div style="font-size: 1.5rem; font-weight: 700;">INV-2024-001</div></div><div style="text-align: right;"><div style="color: #9ca3af; font-size: 0.875rem; margin-bottom: 0.25rem;">Date</div><div style="font-weight: 500;">15 Janvier 2024</div></div></div>
+      <div style="margin-bottom: 2rem;"><div style="color: #9ca3af; font-size: 0.875rem; margin-bottom: 0.25rem;">De</div><div style="font-weight: 500;">Votre Entreprise SARL</div><div style="color: #6b7280; font-size: 0.875rem;">123, Avenue Mohammed V, Casablanca</div><div style="color: #6b7280; font-size: 0.875rem;">ICE: 123456789012345</div></div>
+      <div style="margin-bottom: 1.5rem;">
+        <div style="display: flex; justify-content: space-between; padding: 0.75rem 0; border-bottom: 1px solid rgba(255,255,255,0.05);"><div><div style="font-weight: 500;">Service de consulting</div><div style="color: #6b7280; font-size: 0.875rem;">10h × 500 MAD</div></div><div style="font-weight: 500;">5,000 MAD</div></div>
+        <div style="display: flex; justify-content: space-between; padding: 0.75rem 0; border-bottom: 1px solid rgba(255,255,255,0.05);"><div><div style="font-weight: 500;">Développement web</div><div style="color: #6b7280; font-size: 0.875rem;">40h × 800 MAD</div></div><div style="font-weight: 500;">32,000 MAD</div></div>
+      </div>
+      <div style="padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.1);"><div style="display: flex; justify-content: space-between; padding: 0.5rem 0; color: #9ca3af;"><span>Sous-total</span><span>37,000 MAD</span></div><div style="display: flex; justify-content: space-between; padding: 0.5rem 0; color: #fbbf24;"><span>TVA (20%)</span><span>7,400 MAD</span></div><div style="display: flex; justify-content: space-between; padding: 0.75rem 0; font-size: 1.25rem; font-weight: 700;"><span>Total</span><span>44,400 MAD</span></div></div>
+    </div>
+  </div></div></section>
+
+  <section id="pricing" class="pricing"><div class="container">
+    <div class="section-header"><h2>Tarifs simples et transparents</h2><p>Pas de frais cachés. Facturez autant que vous voulez.</p></div>
+    <div class="pricing-grid">
+      <div class="pricing-card"><h3>Gratuit</h3><p class="desc">Pour commencer</p><div class="price">0 DH<span>/mois</span></div><ul class="pricing-features"><li><svg class="check" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>10 factures/mois</li><li><svg class="check" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>5 clients</li><li><svg class="check" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>Export PDF</li><li><svg class="check" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>Support email</li></ul><a href="/register" class="btn btn-outline" style="width:100%">Commencer</a></div>
+      <div class="pricing-card popular"><div class="popular-badge">Populaire</div><h3>Pro</h3><p class="desc">Pour les pros</p><div class="price">199 DH<span>/mois</span></div><ul class="pricing-features"><li><svg class="check" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>Factures illimitées</li><li><svg class="check" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>Clients illimités</li><li><svg class="check" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>Paiements en ligne</li><li><svg class="check" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>Rappels automatiques</li><li><svg class="check" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>API Access</li></ul><a href="/register" class="btn btn-primary" style="width:100%">Essai gratuit</a></div>
+      <div class="pricing-card"><h3>Enterprise</h3><p class="desc">Pour les équipes</p><div class="price">499 DH<span>/mois</span></div><ul class="pricing-features"><li><svg class="check" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>Tout en Pro</li><li><svg class="check" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>Multi-utilisateurs</li><li><svg class="check" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>Support dédié</li><li><svg class="check" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>Formation incluse</li></ul><a href="/contact" class="btn btn-outline" style="width:100%">Nous contacter</a></div>
+    </div>
+  </div></section>
+
+  <section id="demo" class="cta" style="padding: 80px 0;"><div class="container">
+    <div class="section-header"><h2>Générez votre première facture</h2><p>Essayez notre générateur de factures instantané</p></div>
+    
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; max-width: 1000px; margin: 0 auto;">
+      <div class="invoice-preview" style="padding: 1.5rem;">
+        <h4 style="margin-bottom: 1rem; color: #9ca3af; font-size: 0.875rem;">ENTREZ LES INFORMATIONS</h4>
+        <input type="text" id="companyName" placeholder="Nom de l'entreprise" value="Votre Entreprise SARL" 
+          style="width: 100%; padding: 0.75rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: white; margin-bottom: 0.75rem;">
+        <input type="text" id="clientName" placeholder="Nom du client" value="Client Example" 
+          style="width: 100%; padding: 0.75rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: white; margin-bottom: 0.75rem;">
+        <input type="text" id="iceNumber" placeholder="ICE" value="123456789012345" 
+          style="width: 100%; padding: 0.75rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: white; margin-bottom: 0.75rem;">
+        <input type="text" id="itemDesc" placeholder="Description du service" value="Service de consulting" 
+          style="width: 100%; padding: 0.75rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: white; margin-bottom: 0.75rem;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+          <input type="number" id="itemQty" placeholder="Quantité" value="10" 
+            style="width: 100%; padding: 0.75rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: white;">
+          <input type="number" id="itemPrice" placeholder="Prix (MAD)" value="500" 
+            style="width: 100%; padding: 0.75rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: white;">
+        </div>
+        <button onclick="generateInvoice()" class="btn btn-primary" style="width: 100%; margin-top: 1rem;"> Générer la facture</button>
+      </div>
+      
+      <div class="invoice-preview" style="padding: 1.5rem;" id="invoiceOutput">
+        <div style="text-align: center; color: #6b7280; padding: 2rem;">
+          <svg width="48" height="48" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="margin: 0 auto 1rem; opacity: 0.5;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+          Votre facture apparaîtra ici
+        </div>
+      </div>
+    </div>
+  </div></section>
+
+  <section class="cta"><div class="container"><div class="cta-card">
+    <h2>Prêt à simplifier votre facturation ?</h2>
+    <p>Rejoignez plus de 5000 entrepreneurs marocains qui font confiance à Takaleed</p>
+    <a href="/register" class="btn btn-primary btn-lg">Créer mon compte gratuit</a>
+  </div></div></section>
+
+  <footer><div class="container"><div class="logo"><div class="logo-icon" style="width:32px;height:32px;font-size:1rem;">ت</div>Takaleed</div><p>© 2024 Takaleed. Fait avec ❤️ au Maroc.</p></div></footer>
+
+  <script>
+    function generateInvoice() {
+      const company = document.getElementById('companyName').value || 'Votre Entreprise';
+      const client = document.getElementById('clientName').value || 'Client';
+      const ice = document.getElementById('iceNumber').value || 'N/A';
+      const desc = document.getElementById('itemDesc').value || 'Service';
+      const qty = parseFloat(document.getElementById('itemQty').value) || 1;
+      const price = parseFloat(document.getElementById('itemPrice').value) || 0;
+      const total = qty * price;
+      const tva = total * 0.20;
+      const grandTotal = total + tva;
+      const today = new Date().toLocaleDateString('fr-MA', { day: 'numeric', month: 'long', year: 'numeric' });
+      const invoiceNum = 'INV-' + Date.now().toString().slice(-6);
+      
+      document.getElementById('invoiceOutput').innerHTML = `
+        <div style="display: flex; justify-content: space-between; padding-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,0.1); margin-bottom: 1rem;">
+          <div><div style="color: #9ca3af; font-size: 0.75rem; margin-bottom: 0.25rem;">Facture #</div><div style="font-size: 1.25rem; font-weight: 700;">${invoiceNum}</div></div>
+          <div style="text-align: right;"><div style="color: #9ca3af; font-size: 0.75rem; margin-bottom: 0.25rem;">Date</div><div style="font-weight: 500;">${today}</div></div>
+        </div>
+        <div style="margin-bottom: 1.5rem;"><div style="color: #9ca3af; font-size: 0.75rem; margin-bottom: 0.25rem;">De</div><div style="font-weight: 600;">${company}</div><div style="color: #6b7280; font-size: 0.75rem;">ICE: ${ice}</div></div>
+        <div style="margin-bottom: 1rem;">
+          <div style="color: #9ca3af; font-size: 0.75rem; margin-bottom: 0.25rem;">À</div><div style="font-weight: 600;">${client}</div>
+        </div>
+        <div style="margin-bottom: 1rem;">
+          <div style="display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid rgba(255,255,255,0.05);"><div><div style="font-weight: 500;">${desc}</div><div style="color: #6b7280; font-size: 0.75rem;">${qty} × ${price.toLocaleString()} MAD</div></div><div style="font-weight: 500;">${total.toLocaleString()} MAD</div></div>
+        </div>
+        <div style="padding-top: 0.75rem; border-top: 1px solid rgba(255,255,255,0.1);">
+          <div style="display: flex; justify-content: space-between; padding: 0.25rem 0; color: #9ca3af; font-size: 0.875rem;"><span>Sous-total</span><span>${total.toLocaleString()} MAD</span></div>
+          <div style="display: flex; justify-content: space-between; padding: 0.25rem 0; color: #fbbf24; font-size: 0.875rem;"><span>TVA (20%)</span><span>${tva.toLocaleString()} MAD</span></div>
+          <div style="display: flex; justify-content: space-between; padding: 0.5rem 0; font-size: 1.125rem; font-weight: 700;"><span>Total</span><span style="color: #60a5fa;">${grandTotal.toLocaleString()} MAD</span></div>
+        </div>
+        <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.1); text-align: center;">
+          <span style="color: #22c55e; font-size: 0.875rem;">✓ Facture conforme aux normes marocaines</span>
+        </div>
+      `;
+    }
+    
+    // Generate initial demo invoice
+    generateInvoice();
+  </script>
+</body>
+</html>
